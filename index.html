@@ -6,7 +6,7 @@
     <title>Conversor Universal Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS se mantiene idéntico al proporcionado originalmente */
+        /* CSS se mantiene id篓娄ntico al proporcionado originalmente */
         * {
             margin: 0;
             padding: 0;
@@ -212,7 +212,7 @@
         select option {
             /* Asegura que el texto sea legible en el desplegable nativo */
             color: white; 
-            background: #1a2a6c; /* Fondo para cada opción */
+            background: #1a2a6c; /* Fondo para cada opci篓庐n */
         }
         
         .search-input {
@@ -532,7 +532,7 @@
         <div class="update-info">
             <div class="status-dot" id="status-dot"></div>
             <i class="fas fa-sync-alt"></i> 
-            Tasas en tiempo real - Última actualización: <span id="update-time">Cargando...</span>
+            Tasas en tiempo real - 聛0聣3ltima actualizaci篓庐n: <span id="update-time">Cargando...</span>
         </div>
         
         <div class="converter-box">
@@ -569,7 +569,7 @@
         </div>
         
         <div class="result-box">
-            <div class="result-title">💱 Resultado de la conversión:</div>
+            <div class="result-title">聰9脹1 Resultado de la conversi篓庐n:</div>
             <div class="result-value" id="result-value">0.00</div>
             <div class="result-detail" id="result-detail">Cargando tasas y monedas...</div>
             <div class="rate-info" id="rate-info"></div>
@@ -579,7 +579,7 @@
             <div class="category-card">
                 <i class="fas fa-university"></i>
                 <div class="category-title">Monedas Oficiales</div>
-                <div class="category-count" id="fiat-count">0 países</div>
+                <div class="category-count" id="fiat-count">0 pa篓陋ses</div>
             </div>
             <div class="category-card">
                 <i class="fab fa-bitcoin"></i>
@@ -604,8 +604,8 @@
         </div>
         
         <div class="info-note">
-            <p><strong>📊 Base de Datos Completa:</strong> Incluye todas las monedas oficiales reconocidas por ISO 4217, Bitcoin (BTC), Tether (USDT), Oro (XAU) y Euro Digital (EUR-D).</p>
-            <p><strong>⚡ Datos en Tiempo Real:</strong> Tasas actualizadas desde una API externa (requiere conexión a internet).</p>
+            <p><strong>聰9脻6 Base de Datos Completa:</strong> Incluye todas las monedas oficiales reconocidas por ISO 4217, Bitcoin (BTC), Tether (USDT), Oro (XAU) y Euro Digital (EUR-D).</p>
+            <p><strong>聛7虏3 Datos en Tiempo Real:</strong> Tasas actualizadas desde una API externa (requiere conexi篓庐n a internet).</p>
         </div>
     </div>
 
@@ -618,16 +618,16 @@
         // Datos de monedas especiales que no vienen en la API o que queremos especificar
         // Las tasas de estas monedas se establecen con respecto a la moneda base de la API (USD).
         let customCurrencies = {
-            "BTC": {name: "Bitcoin", symbol: "₿", country: "Global", type: "crypto", region: "Global", rateToUSD: 60000}, // Tasa estimada a USD
-            "USDT": {name: "Tether", symbol: "₮", country: "Global", type: "crypto", region: "Global", rateToUSD: 1}, // Tasa a USD (normalmente 1)
+            "BTC": {name: "Bitcoin", symbol: "聛6碌0", country: "Global", type: "crypto", region: "Global", rateToUSD: 60000}, // Tasa estimada a USD
+            "USDT": {name: "Tether", symbol: "聛6鲁3", country: "Global", type: "crypto", region: "Global", rateToUSD: 1}, // Tasa a USD (normalmente 1)
             "XAU": {name: "Oro (onza troy)", symbol: "XAU", country: "Global", type: "metal", region: "Global", rateToUSD: 1950}, // Tasa estimada a USD
             // EUR-D no tiene una tasa fija, toma la de EUR de la API. Se procesa diferente.
-            "EUR-D": {name: "Euro Digital (CBDC)", symbol: "€", country: "Zona Euro", type: "digital", region: "Europe"}, 
+            "EUR-D": {name: "Euro Digital (CBDC)", symbol: "垄茫", country: "Zona Euro", type: "digital", region: "Europe"}, 
         };
 
-        let allCurrencies = {}; // Objeto que contendrá todas las monedas (ISO + especiales) con sus datos
+        let allCurrencies = {}; // Objeto que contendr篓垄 todas las monedas (ISO + especiales) con sus datos
         let exchangeRates = {}; // Objeto para almacenar las tasas de cambio de la API (siempre relativas a la moneda base de la API, ej. USD)
-        let lastUpdateTime = null; // Cambiado a null para indicar que aún no hay actualización
+        let lastUpdateTime = null; // Cambiado a null para indicar que a篓虏n no hay actualizaci篓庐n
 
         const amountInput = document.getElementById('amount');
         const fromCurrencySelect = document.getElementById('from-currency');
@@ -648,7 +648,7 @@
         const fiatCountSpan = document.getElementById('fiat-count');
         const digitalCountSpan = document.getElementById('digital-count');
 
-        // Función para obtener los nombres de monedas y las tasas de la API
+        // Funci篓庐n para obtener los nombres de monedas y las tasas de la API
         async function fetchCurrencyData(baseCurrency = 'USD') {
             apiStatusElement.textContent = 'Conectando...';
             statusDot.style.backgroundColor = 'orange'; // Naranja para "cargando"
@@ -656,7 +656,7 @@
             rateInfo.textContent = '';
 
             try {
-                // Paso 1: Obtener la lista de códigos de moneda y sus nombres
+                // Paso 1: Obtener la lista de c篓庐digos de moneda y sus nombres
                 const codesResponse = await fetch(`https://www.exchangerate-api.com/docs/supported-currencies`);
                 if (!codesResponse.ok) {
                      throw new Error(`Error al obtener la lista de monedas ISO: ${codesResponse.status} - ${codesResponse.statusText}`);
@@ -679,7 +679,7 @@
                 // Combinar monedas ISO con monedas personalizadas
                 allCurrencies = { ...isoCurrencies, ...customCurrencies };
 
-                // Paso 2: Obtener las tasas de conversión
+                // Paso 2: Obtener las tasas de conversi篓庐n
                 const ratesResponse = await fetch(`${API_BASE_URL}${baseCurrency}`);
                 if (!ratesResponse.ok) {
                     const errorData = await ratesResponse.json();
@@ -695,21 +695,21 @@
                     statusDot.style.backgroundColor = '#00ff80'; // Verde
                     updateUITime();
                     loadCurrencyOptions(); // Cargar las opciones con todos los datos
-                    convertCurrency(); // Realizar la conversión inicial
+                    convertCurrency(); // Realizar la conversi篓庐n inicial
                 } else {
-                    throw new Error(`La API de tasas respondió con un estado de error: ${data.result}`);
+                    throw new Error(`La API de tasas respondi篓庐 con un estado de error: ${data.result}`);
                 }
             } catch (error) {
                 console.error("Error al obtener datos de monedas:", error);
-                apiStatusElement.textContent = 'Error de conexión';
+                apiStatusElement.textContent = 'Error de conexi篓庐n';
                 statusDot.style.backgroundColor = 'red';
-                resultDetail.textContent = 'Error al cargar las tasas. Intente de nuevo más tarde.';
+                resultDetail.textContent = 'Error al cargar las tasas. Intente de nuevo m篓垄s tarde.';
                 rateInfo.textContent = '';
-                alert(`No se pudieron cargar las monedas o tasas de cambio: ${error.message}. Por favor, verifique su clave de API y su conexión a internet.`);
+                alert(`No se pudieron cargar las monedas o tasas de cambio: ${error.message}. Por favor, verifique su clave de API y su conexi篓庐n a internet.`);
             }
         }
 
-        // Función para cargar monedas en los selectores
+        // Funci篓庐n para cargar monedas en los selectores
         function loadCurrencyOptions() {
             const fromSelect = fromCurrencySelect;
             const toSelect = toCurrencySelect;
@@ -746,16 +746,16 @@
                 toSelect.appendChild(option2);
             }
             
-            // Actualizar contadores de estadísticas
+            // Actualizar contadores de estad篓陋sticas
             totalCurrenciesSpan.textContent = Object.keys(allCurrencies).length;
-            // Active currencies serán las que la API devuelva tasas + las nuestras fijas
+            // Active currencies ser篓垄n las que la API devuelva tasas + las nuestras fijas
             activeCurrenciesSpan.textContent = Object.keys(exchangeRates).length + Object.keys(customCurrencies).length; 
             cryptoCurrenciesSpan.textContent = cryptoCount;
             metalCurrenciesSpan.textContent = metalCount;
-            fiatCountSpan.textContent = `${fiatCount} países`;
+            fiatCountSpan.textContent = `${fiatCount} pa篓陋ses`;
             digitalCountSpan.textContent = `${digitalCount} monedas`; // Ahora es 1 (EUR-D)
 
-            // Establecer valores predeterminados si no están ya seleccionados
+            // Establecer valores predeterminados si no est篓垄n ya seleccionados
             if (fromSelect.value === "" && Object.keys(allCurrencies).includes('USD')) {
                 fromSelect.value = 'USD';
             } else if (fromSelect.value === "" && sortedCurrencyCodes.length > 0) {
@@ -769,7 +769,7 @@
             }
         }
         
-        // Función para convertir monedas
+        // Funci篓庐n para convertir monedas
         async function convertCurrency() {
             const amount = parseFloat(amountInput.value);
             const fromCurrency = fromCurrencySelect.value;
@@ -777,12 +777,12 @@
             
             if (isNaN(amount) || amount <= 0) {
                 resultValue.textContent = '0.00';
-                resultDetail.textContent = 'Por favor ingrese una cantidad válida';
+                resultDetail.textContent = 'Por favor ingrese una cantidad v篓垄lida';
                 rateInfo.textContent = '';
                 return;
             }
             
-            // Si las tasas no se han cargado aún o no hay tasas para las monedas seleccionadas
+            // Si las tasas no se han cargado a篓虏n o no hay tasas para las monedas seleccionadas
             if (Object.keys(exchangeRates).length === 0 || 
                 (!exchangeRates[fromCurrency] && !customCurrencies[fromCurrency]) || 
                 (!exchangeRates[toCurrency] && !customCurrencies[toCurrency])) {
@@ -832,7 +832,7 @@
             rateInfo.textContent = `1 ${fromCurrency} = ${(toRateUSD / fromRateUSD).toFixed(6)} ${toCurrency}`;
         }
         
-        // Función para intercambiar monedas
+        // Funci篓庐n para intercambiar monedas
         function switchCurrencies() {
             const tempFromValue = fromCurrencySelect.value;
             fromCurrencySelect.value = toCurrencySelect.value;
@@ -845,7 +845,7 @@
             convertCurrency();
         }
         
-        // Función para filtrar monedas en búsqueda
+        // Funci篓庐n para filtrar monedas en b篓虏squeda
         function setupSearch() {
             fromSearchInput.addEventListener('input', () => {
                 filterOptions(fromCurrencySelect, fromSearchInput.value);
@@ -872,7 +872,7 @@
             }
         }
 
-        // Función para actualizar la hora de la interfaz
+        // Funci篓庐n para actualizar la hora de la interfaz
         function updateUITime() {
             if (lastUpdateTime) {
                 const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
@@ -884,7 +884,7 @@
             }
         }
         
-        // Inicialización
+        // Inicializaci篓庐n
         document.addEventListener('DOMContentLoaded', async () => {
             // Cargar la lista de monedas y tasas iniciales desde la API
             await fetchCurrencyData(); // Llamada inicial para cargar todo
@@ -896,13 +896,13 @@
             fromCurrencySelect.addEventListener('change', convertCurrency);
             toCurrencySelect.addEventListener('change', convertCurrency);
             
-            // Configurar búsqueda
+            // Configurar b篓虏squeda
             setupSearch();
             
             // Actualizar el tiempo mostrado cada segundo (solo la hora local, no de la API)
             setInterval(updateUITime, 1000); 
 
-            // Re-obtener tasas de la API cada 30 minutos (ajusta según los límites de tu API y necesidad)
+            // Re-obtener tasas de la API cada 30 minutos (ajusta seg篓虏n los l篓陋mites de tu API y necesidad)
             // Esto es crucial para tener tasas "reales" en el tiempo.
             setInterval(() => fetchCurrencyData('USD'), 30 * 60 * 1000); 
         });
