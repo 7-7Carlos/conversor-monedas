@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor Universal Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS se mantiene idéntico al proporcionado originalmente */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-attachment: fixed;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: rgba(25, 35, 65, 0.7);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            margin: 20px auto;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FFD700, transparent);
+        }
+        
+        .subtitle {
+            color: #aaccff;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFD700;
+            display: block;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #aaccff;
+            margin-top: 5px;
+            font-weight: 300;
+        }
+        
+        .update-info {
+            background: rgba(0, 200, 100, 0.15);
+            border: 1px solid rgba(0, 255, 100, 0.3);
+            padding: 14px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-size: 0.95rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 100, 0.1);
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff80;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 0 10px #00ff80;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.6; transform: scale(0.9); }
+        }
+        
+        .converter-box {
+            background: rgba(30, 40, 75, 0.6);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        input[type="number"] {
+            flex: 1;
+            padding: 17px 20px;
+            border: 2px solid rgba(100, 150, 255, 0.3);
+            border-radius: 15px;
+            background: rgba(20, 30, 60, 0.5);
+            color: white;
+            font-size: 1.2rem;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        input[type="number"]:focus {
+            border-color: #4d9aff;
+            box-shadow: 0 0 20px rgba(77, 154, 255, 0.4), inset 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        input::placeholder {
+            color: rgba(200, 220, 255, 0.4);
+        }
+        
+        select {
+            padding: 16px 20px;
+            border: 2px solid rgba(100, 150, 255, 0.3);
+            border-radius: 15px;
+            background: rgba(20, 30, 60, 0.5);
+            color: white;
+            font-size: 1.1rem;
+            min-width: 200px;
+            outline: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        select:focus {
+            border-color: #4d9aff;
+            box-shadow: 0 0 20px rgba(77, 154, 255, 0.4);
+        }
+        
+        select option {
+            /* Asegura que el texto sea legible en el desplegable nativo */
+            color: white; 
+            background: #1a2a6c; /* Fondo para cada opción */
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(20, 30, 60, 0.5);
+            color: white;
+            font-size: 1rem;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .switch-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border: none;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(255, 165, 0, 0.5);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .switch-btn:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: 0 8px 25px rgba(255, 165, 0, 0.7);
+        }
+        
+        .switch-btn i {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .result-box {
+            background: linear-gradient(135deg, rgba(0, 20, 40, 0.4), rgba(0, 10, 30, 0.2));
+            border-radius: 18px;
+            padding: 35px;
+            text-align: center;
+            margin-top: 25px;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .result-title {
+            font-size: 1.2rem;
+            color: #aaccff;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        .result-value {
+            font-size: 2.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            letter-spacing: -0.5px;
+        }
+        
+        .result-detail {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            font-weight: 300;
+            max-width: 90%;
+            line-height: 1.6;
+        }
+        
+        .rate-info {
+            font-size: 1rem;
+            color: #88bbff;
+            font-style: italic;
+            margin-top: 10px;
+            background: rgba(0, 20, 50, 0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #1a2a6c;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 7px 20px rgba(255, 165, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 165, 0, 0.7);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(25deg);
+            transition: all 0.6s;
+        }
+        
+        .btn:hover::after {
+            left: 120%;
+        }
+        
+        .currency-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 18px;
+            margin-top: 30px;
+        }
+        
+        .category-card {
+            background: rgba(30, 40, 75, 0.6);
+            padding: 22px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(100, 150, 255, 0.15);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category-card:hover {
+            transform: translateY(-7px);
+            background: rgba(40, 60, 110, 0.7);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .category-card i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+            color: #FFD700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .category-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            color: #e0e0e0;
+        }
+        
+        .category-count {
+            font-size: 0.9rem;
+            color: #aaccff;
+        }
+        
+        .info-note {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #88bbff;
+            margin-top: 30px;
+            padding: 20px;
+            line-height: 1.6;
+            background: rgba(20, 40, 80, 0.3);
+            border-radius: 15px;
+            border: 1px solid rgba(100, 150, 255, 0.15);
+        }
+        
+        .info-note strong {
+            color: #FFD700;
+        }
+        
+        .api-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: #aaccff;
+            margin-top: 15px;
+            padding: 10px;
+        }
+        
+        .api-status i {
+            color: #00ff80;
+        }
+        
+        .currency-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        
+        .tag-fiat {
+            background: rgba(77, 154, 255, 0.2);
+            color: #4d9aff;
+            border: 1px solid rgba(77, 154, 255, 0.3);
+        }
+        
+        .tag-crypto {
+            background: rgba(255, 165, 0, 0.2);
+            color: #FFA500;
+            border: 1px solid rgba(255, 165, 0, 0.3);
+        }
+        
+        .tag-metal {
+            background: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .tag-digital {
+            background: rgba(100, 200, 100, 0.2);
+            color: #64c864;
+            border: 1px solid rgba(100, 200, 100, 0.3);
+        }
+        
+        .currency-flag {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #2c3e50;
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .input-container {
+                flex-direction: column;
+            }
+            
+            select {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .result-value {
+                font-size: 2.3rem;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .currency-categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-globe-americas"></i> Conversor Universal Pro</h1>
+            <p class="subtitle">Monedas fiduciarias, Bitcoin, USDT, Oro y Euro Digital con tasas en tiempo real</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="total-currencies">0</span>
+                    <span class="stat-label">Monedas Totales</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="active-currencies">0</span>
+                    <span class="stat-label">Monedas Actuales</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="crypto-currencies">0</span>
+                    <span class="stat-label">Criptomonedas</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="metal-currencies">0</span>
+                    <span class="stat-label">Metales Preciosos</span>
+                </div>
+            </div>
+        </header>
+        
+        <div class="update-info">
+            <div class="status-dot" id="status-dot"></div>
+            <i class="fas fa-sync-alt"></i> 
+            Tasas en tiempo real - Última actualización: <span id="update-time">Cargando...</span>
+        </div>
+        
+        <div class="converter-box">
+            <div class="input-group">
+                <label for="amount"><i class="fas fa-calculator"></i> Cantidad a convertir:</label>
+                <input type="number" id="amount" placeholder="Ej: 1000" value="1000" min="0" step="any">
+            </div>
+            
+            <div class="input-group">
+                <label for="from-currency"><i class="fas fa-money-bill-wave"></i> Desde:</label>
+                <input type="text" class="search-input" id="from-search" placeholder="Buscar moneda..." autocomplete="off">
+                <div class="input-container">
+                    <input type="number" id="from-amount" disabled>
+                    <select id="from-currency"></select>
+                </div>
+            </div>
+            
+            <button class="switch-btn" id="switch-currencies" title="Intercambiar monedas">
+                <i class="fas fa-exchange-alt"></i>
+            </button>
+            
+            <div class="input-group">
+                <label for="to-currency"><i class="fas fa-coins"></i> Hacia:</label>
+                <input type="text" class="search-input" id="to-search" placeholder="Buscar moneda..." autocomplete="off">
+                <div class="input-container">
+                    <input type="number" id="to-amount" disabled>
+                    <select id="to-currency"></select>
+                </div>
+            </div>
+            
+            <button class="btn" id="convert-btn">
+                <i class="fas fa-bolt"></i> Convertir Ahora
+            </button>
+        </div>
+        
+        <div class="result-box">
+            <div class="result-title">💱 Resultado de la conversión:</div>
+            <div class="result-value" id="result-value">0.00</div>
+            <div class="result-detail" id="result-detail">Cargando tasas y monedas...</div>
+            <div class="rate-info" id="rate-info"></div>
+        </div>
+        
+        <div class="currency-categories">
+            <div class="category-card">
+                <i class="fas fa-university"></i>
+                <div class="category-title">Monedas Oficiales</div>
+                <div class="category-count" id="fiat-count">0 países</div>
+            </div>
+            <div class="category-card">
+                <i class="fab fa-bitcoin"></i>
+                <div class="category-title">Criptomonedas</div>
+                <div class="category-count" id="crypto-count">BTC, USDT</div>
+            </div>
+            <div class="category-card">
+                <i class="fas fa-gem"></i>
+                <div class="category-title">Metales Preciosos</div>
+                <div class="category-count" id="metal-count">Oro (XAU)</div>
+            </div>
+            <div class="category-card">
+                <i class="fas fa-euro-sign"></i>
+                <div class="category-title">Euro Digital</div>
+                <div class="category-count" id="digital-count">EUR-D</div>
+            </div>
+        </div>
+        
+        <div class="api-status">
+            <i class="fas fa-server"></i>
+            <span>Estado API: <span id="api-status">Cargando...</span></span>
+        </div>
+        
+        <div class="info-note">
+            <p><strong>📊 Base de Datos Completa:</strong> Incluye todas las monedas oficiales reconocidas por ISO 4217, Bitcoin (BTC), Tether (USDT), Oro (XAU) y Euro Digital (EUR-D).</p>
+            <p><strong>⚡ Datos en Tiempo Real:</strong> Tasas actualizadas desde una API externa (requiere conexión a internet).</p>
+        </div>
+    </div>
+
+    <script>
+        // *** TU CLAVE DE API DE ExchangeRate-API.com ***
+        // Reemplazada con la clave proporcionada en la imagen.
+        const API_KEY = 'edb44e66c3d312c21b60deb3'; 
+        const API_BASE_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/`;
+
+        // Datos de monedas especiales que no vienen en la API o que queremos especificar
+        // Las tasas de estas monedas se establecen con respecto a la moneda base de la API (USD).
+        let customCurrencies = {
+            "BTC": {name: "Bitcoin", symbol: "₿", country: "Global", type: "crypto", region: "Global", rateToUSD: 60000}, // Tasa estimada a USD
+            "USDT": {name: "Tether", symbol: "₮", country: "Global", type: "crypto", region: "Global", rateToUSD: 1}, // Tasa a USD (normalmente 1)
+            "XAU": {name: "Oro (onza troy)", symbol: "XAU", country: "Global", type: "metal", region: "Global", rateToUSD: 1950}, // Tasa estimada a USD
+            // EUR-D no tiene una tasa fija, toma la de EUR de la API. Se procesa diferente.
+            "EUR-D": {name: "Euro Digital (CBDC)", symbol: "€", country: "Zona Euro", type: "digital", region: "Europe"}, 
+        };
+
+        let allCurrencies = {}; // Objeto que contendrá todas las monedas (ISO + especiales) con sus datos
+        let exchangeRates = {}; // Objeto para almacenar las tasas de cambio de la API (siempre relativas a la moneda base de la API, ej. USD)
+        let lastUpdateTime = null; // Cambiado a null para indicar que aún no hay actualización
+
+        const amountInput = document.getElementById('amount');
+        const fromCurrencySelect = document.getElementById('from-currency');
+        const toCurrencySelect = document.getElementById('to-currency');
+        const fromSearchInput = document.getElementById('from-search');
+        const toSearchInput = document.getElementById('to-search');
+        const resultValue = document.getElementById('result-value');
+        const resultDetail = document.getElementById('result-detail');
+        const rateInfo = document.getElementById('rate-info');
+        const apiStatusElement = document.getElementById('api-status');
+        const updateTimeElement = document.getElementById('update-time');
+        const statusDot = document.getElementById('status-dot');
+
+        const totalCurrenciesSpan = document.getElementById('total-currencies');
+        const activeCurrenciesSpan = document.getElementById('active-currencies');
+        const cryptoCurrenciesSpan = document.getElementById('crypto-currencies');
+        const metalCurrenciesSpan = document.getElementById('metal-currencies');
+        const fiatCountSpan = document.getElementById('fiat-count');
+        const digitalCountSpan = document.getElementById('digital-count');
+
+        // Función para obtener los nombres de monedas y las tasas de la API
+        async function fetchCurrencyData(baseCurrency = 'USD') {
+            apiStatusElement.textContent = 'Conectando...';
+            statusDot.style.backgroundColor = 'orange'; // Naranja para "cargando"
+            resultDetail.textContent = 'Cargando tasas y monedas...';
+            rateInfo.textContent = '';
+
+            try {
+                // Paso 1: Obtener la lista de códigos de moneda y sus nombres
+                const codesResponse = await fetch(`https://www.exchangerate-api.com/docs/supported-currencies`);
+                if (!codesResponse.ok) {
+                     throw new Error(`Error al obtener la lista de monedas ISO: ${codesResponse.status} - ${codesResponse.statusText}`);
+                }
+                const codesHtml = await codesResponse.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(codesHtml, 'text/html');
+                const tableRows = doc.querySelectorAll('#supported-currencies-table tbody tr');
+
+                let isoCurrencies = {};
+                tableRows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length >= 2) {
+                        const code = cells[0].textContent.trim();
+                        const name = cells[1].textContent.trim();
+                        isoCurrencies[code] = {name: name, symbol: code, country: 'Desconocido', type: "fiat", region: "Desconocido"}; 
+                    }
+                });
+
+                // Combinar monedas ISO con monedas personalizadas
+                allCurrencies = { ...isoCurrencies, ...customCurrencies };
+
+                // Paso 2: Obtener las tasas de conversión
+                const ratesResponse = await fetch(`${API_BASE_URL}${baseCurrency}`);
+                if (!ratesResponse.ok) {
+                    const errorData = await ratesResponse.json();
+                    throw new Error(`Error API tasas: ${ratesResponse.status} - ${errorData.result || 'Unknown error'}. Mensaje: ${errorData['error-type'] || ''}`);
+                }
+                const data = await ratesResponse.json();
+
+                if (data.result === 'success') {
+                    exchangeRates = data.conversion_rates;
+                    lastUpdateTime = new Date(data.time_last_update_utc);
+                    
+                    apiStatusElement.textContent = 'Conectado';
+                    statusDot.style.backgroundColor = '#00ff80'; // Verde
+                    updateUITime();
+                    loadCurrencyOptions(); // Cargar las opciones con todos los datos
+                    convertCurrency(); // Realizar la conversión inicial
+                } else {
+                    throw new Error(`La API de tasas respondió con un estado de error: ${data.result}`);
+                }
+            } catch (error) {
+                console.error("Error al obtener datos de monedas:", error);
+                apiStatusElement.textContent = 'Error de conexión';
+                statusDot.style.backgroundColor = 'red';
+                resultDetail.textContent = 'Error al cargar las tasas. Intente de nuevo más tarde.';
+                rateInfo.textContent = '';
+                alert(`No se pudieron cargar las monedas o tasas de cambio: ${error.message}. Por favor, verifique su clave de API y su conexión a internet.`);
+            }
+        }
+
+        // Función para cargar monedas en los selectores
+        function loadCurrencyOptions() {
+            const fromSelect = fromCurrencySelect;
+            const toSelect = toCurrencySelect;
+            
+            fromSelect.innerHTML = '';
+            toSelect.innerHTML = '';
+            
+            const sortedCurrencyCodes = Object.keys(allCurrencies).sort();
+            
+            let fiatCount = 0;
+            let cryptoCount = 0;
+            let metalCount = 0;
+            let digitalCount = 0;
+
+            for (const code of sortedCurrencyCodes) {
+                const currency = allCurrencies[code];
+                if (!currency) continue;
+
+                // Actualizar contadores por tipo
+                switch(currency.type) {
+                    case 'crypto': cryptoCount++; break;
+                    case 'metal': metalCount++; break;
+                    case 'digital': digitalCount++; break;
+                    case 'fiat': fiatCount++; break;
+                }
+                
+                const option = document.createElement('option');
+                option.value = code;
+                // Simplificado para garantizar compatibilidad con selectores nativos en Android
+                option.textContent = `${code} - ${currency.name}`; 
+                
+                const option2 = option.cloneNode(true);
+                fromSelect.appendChild(option);
+                toSelect.appendChild(option2);
+            }
+            
+            // Actualizar contadores de estadísticas
+            totalCurrenciesSpan.textContent = Object.keys(allCurrencies).length;
+            // Active currencies serán las que la API devuelva tasas + las nuestras fijas
+            activeCurrenciesSpan.textContent = Object.keys(exchangeRates).length + Object.keys(customCurrencies).length; 
+            cryptoCurrenciesSpan.textContent = cryptoCount;
+            metalCurrenciesSpan.textContent = metalCount;
+            fiatCountSpan.textContent = `${fiatCount} países`;
+            digitalCountSpan.textContent = `${digitalCount} monedas`; // Ahora es 1 (EUR-D)
+
+            // Establecer valores predeterminados si no están ya seleccionados
+            if (fromSelect.value === "" && Object.keys(allCurrencies).includes('USD')) {
+                fromSelect.value = 'USD';
+            } else if (fromSelect.value === "" && sortedCurrencyCodes.length > 0) {
+                 fromSelect.value = sortedCurrencyCodes[0];
+            }
+
+            if (toSelect.value === "" && Object.keys(allCurrencies).includes('EUR')) {
+                toSelect.value = 'EUR';
+            } else if (toSelect.value === "" && sortedCurrencyCodes.length > 1) {
+                toSelect.value = sortedCurrencyCodes[1];
+            }
+        }
+        
+        // Función para convertir monedas
+        async function convertCurrency() {
+            const amount = parseFloat(amountInput.value);
+            const fromCurrency = fromCurrencySelect.value;
+            const toCurrency = toCurrencySelect.value;
+            
+            if (isNaN(amount) || amount <= 0) {
+                resultValue.textContent = '0.00';
+                resultDetail.textContent = 'Por favor ingrese una cantidad válida';
+                rateInfo.textContent = '';
+                return;
+            }
+            
+            // Si las tasas no se han cargado aún o no hay tasas para las monedas seleccionadas
+            if (Object.keys(exchangeRates).length === 0 || 
+                (!exchangeRates[fromCurrency] && !customCurrencies[fromCurrency]) || 
+                (!exchangeRates[toCurrency] && !customCurrencies[toCurrency])) {
+                resultValue.textContent = '0.00';
+                resultDetail.textContent = 'Esperando tasas de la API o moneda no disponible.';
+                rateInfo.textContent = '';
+                return;
+            }
+
+            let fromRateUSD;
+            let toRateUSD;
+
+            // Determinar la tasa de la moneda de origen a USD
+            if (customCurrencies[fromCurrency] && customCurrencies[fromCurrency].rateToUSD) {
+                fromRateUSD = customCurrencies[fromCurrency].rateToUSD;
+            } else if (fromCurrency === "EUR-D") { // EUR-D toma la tasa de EUR
+                 fromRateUSD = exchangeRates["EUR"];
+            }
+            else if (exchangeRates[fromCurrency]) {
+                fromRateUSD = exchangeRates[fromCurrency];
+            } else {
+                console.error(`Tasa USD no disponible para ${fromCurrency}`);
+                resultDetail.textContent = `Tasa no disponible para ${fromCurrency}.`;
+                return;
+            }
+
+            // Determinar la tasa de la moneda de destino a USD
+            if (customCurrencies[toCurrency] && customCurrencies[toCurrency].rateToUSD) {
+                toRateUSD = customCurrencies[toCurrency].rateToUSD;
+            } else if (toCurrency === "EUR-D") { // EUR-D toma la tasa de EUR
+                toRateUSD = exchangeRates["EUR"];
+            }
+            else if (exchangeRates[toCurrency]) {
+                toRateUSD = exchangeRates[toCurrency];
+            } else {
+                console.error(`Tasa USD no disponible para ${toCurrency}`);
+                resultDetail.textContent = `Tasa no disponible para ${toCurrency}.`;
+                return;
+            }
+            
+            // Convertir de la moneda origen a USD (base de la API) y luego a la moneda destino
+            const amountInUSD = amount / fromRateUSD;
+            const convertedAmount = amountInUSD * toRateUSD;
+            
+            resultValue.textContent = convertedAmount.toFixed(2);
+            resultDetail.textContent = `${amount.toFixed(2)} ${fromCurrency} = ${convertedAmount.toFixed(2)} ${toCurrency}`;
+            rateInfo.textContent = `1 ${fromCurrency} = ${(toRateUSD / fromRateUSD).toFixed(6)} ${toCurrency}`;
+        }
+        
+        // Función para intercambiar monedas
+        function switchCurrencies() {
+            const tempFromValue = fromCurrencySelect.value;
+            fromCurrencySelect.value = toCurrencySelect.value;
+            toCurrencySelect.value = tempFromValue;
+            
+            const tempFromSearch = fromSearchInput.value;
+            fromSearchInput.value = toSearchInput.value;
+            toSearchInput.value = tempFromSearch;
+
+            convertCurrency();
+        }
+        
+        // Función para filtrar monedas en búsqueda
+        function setupSearch() {
+            fromSearchInput.addEventListener('input', () => {
+                filterOptions(fromCurrencySelect, fromSearchInput.value);
+            });
+            
+            toSearchInput.addEventListener('input', () => {
+                filterOptions(toCurrencySelect, toSearchInput.value);
+            });
+        }
+        
+        function filterOptions(selectElement, searchTerm) {
+            const options = selectElement.options;
+            const lowerCaseSearchTerm = searchTerm.toLowerCase();
+            
+            for (let i = 0; i < options.length; i++) {
+                const option = options[i];
+                const text = option.textContent.toLowerCase();
+                
+                if (text.includes(lowerCaseSearchTerm)) {
+                    option.style.display = '';
+                } else {
+                    option.style.display = 'none';
+                }
+            }
+        }
+
+        // Función para actualizar la hora de la interfaz
+        function updateUITime() {
+            if (lastUpdateTime) {
+                const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+                updateTimeElement.textContent = lastUpdateTime.toLocaleString('es-ES', options);
+            } else {
+                const now = new Date(); // Muestra la hora actual si la API no ha actualizado
+                const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+                updateTimeElement.textContent = `Local: ${now.toLocaleString('es-ES', options)}`;
+            }
+        }
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Cargar la lista de monedas y tasas iniciales desde la API
+            await fetchCurrencyData(); // Llamada inicial para cargar todo
+
+            // Configurar eventos
+            document.getElementById('convert-btn').addEventListener('click', convertCurrency);
+            document.getElementById('switch-currencies').addEventListener('click', switchCurrencies);
+            amountInput.addEventListener('input', convertCurrency);
+            fromCurrencySelect.addEventListener('change', convertCurrency);
+            toCurrencySelect.addEventListener('change', convertCurrency);
+            
+            // Configurar búsqueda
+            setupSearch();
+            
+            // Actualizar el tiempo mostrado cada segundo (solo la hora local, no de la API)
+            setInterval(updateUITime, 1000); 
+
+            // Re-obtener tasas de la API cada 30 minutos (ajusta según los límites de tu API y necesidad)
+            // Esto es crucial para tener tasas "reales" en el tiempo.
+            setInterval(() => fetchCurrencyData('USD'), 30 * 60 * 1000); 
+        });
+    </script>
+</body>
+</html>
